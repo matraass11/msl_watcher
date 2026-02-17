@@ -1,49 +1,16 @@
-/* Ensure the container is the anchor for all offsets */
-.html5-video-container {
-    position: relative !important;
-}
-
 /* Shared style for ALL boxes */
 .yt-overlay-box {
-    position: absolute;
-    background-color: pink; /* As requested */
-    z-index: 9999;
+    position: fixed; /* Fixed to viewport so it follows video position */
+    background-color: pink;
+    z-index: 2147483647; /* Maximum possible z-index */
     pointer-events: none;
+    transition: none !important; /* Prevents "lagging" behind video during resize */
 }
 
-/* --- TOP LEFT CORNER GROUP --- */
-
-/* Box 1: Horizontal strip in top left */
-#yt-overlay-1 {
-    top: 7%;
-    left: 5%;
-    width: 33%;
-    height: 7%;
-}
-
-/* Box 2: Vertical strip in top left */
-#yt-overlay-2 {
-    top: 12%;
-    left: 5%;
-    width: 10%;
-    height: 30%;
-}
-
-/* --- BOTTOM STRIP --- */
-
-/* Box 3: Long strip covering near the bottom */
-#yt-overlay-3 {
-    /* Using 'top' instead of 'bottom' often provides better 
-       stability across browser resizing for these overlays */
-    top: 79%;     /* Calculated: 100% - (6% + 15%) */
-    left: 10%;
-    width: 88%;    
-    height: 15%;
-}
-
-/* Hides the video preview thumbnail when hovering over the progress bar */
+/* The Anti-Spoiler CSS */
 .ytp-tooltip.ytp-preview, 
-.ytp-tooltip-bg, 
+.ytp-videopreview, 
+.ytp-tooltip-bg,
 .ytp-ce-video {
     display: none !important;
 }
