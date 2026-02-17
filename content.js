@@ -1,45 +1,48 @@
+// CONFIGURATION: Define your boxes here using percentages (0-100)
+const OVERLAYS = {
+    "top-horizontal-strip": {
+        xStart: 5,  xEnd: 38, // Width is 33%
+        yStart: 7,  yEnd: 14  // Height is 7%
+    },
+    "left-vertical-strip": {
+        xStart: 5,  xEnd: 15, // Width is 10%
+        yStart: 12, yEnd: 42  // Height is 30%
+    },
+    "bottom-wide-strip": {
+        xStart: 10, xEnd: 98, // Width is 88%
+        yStart: 79, yEnd: 94  // Height is 15%
+    }
+};
+
 function syncOverlays() {
     const video = document.querySelector('video');
-    const player = document.querySelector('#movie_player');
-    
-    if (!video || !player) return requestAnimationFrame(syncOverlays);
+    if (!video) return requestAnimationFrame(syncOverlays);
 
-    const boxIds = ['yt-overlay-1', 'yt-overlay-2', 'yt-overlay-3'];
+    const rect = video.getBoundingClientRect();
 
-    boxIds.forEach(id => {
+    // Loop through our configuration object
+    for (const [id, config] of Object.entries(OVERLAYS)) {
         let box = document.getElementById(id);
         
-        // Create box if it doesn't exist
         if (!box) {
             box = document.createElement('div');
             box.id = id;
             box.className = 'yt-overlay-box';
-            // We attach directly to the body to avoid YouTube's 
-            // internal "z-index" and "sandboxing" issues
             document.body.appendChild(box);
         }
 
-        // Get the EXACT coordinates of the video pixels
-        const rect = video.getBoundingClientRect();
+        // Calculate dimensions based on the Start/End points
+        const widthPct = config.xEnd - config.xStart;
+        const heightPct = config.yEnd - config.yStart;
 
-        // Map your percentages to the video's current real-time pixels
-        if (id === 'yt-overlay-1') {
-            updateStyle(box, rect, 7, 5, 33, 7);
-        } else if (id === 'yt-overlay-2') {
-            updateStyle(box, rect, 12, 5, 10, 30);
-        } else if (id === 'yt-overlay-3') {
-            updateStyle(box, rect, 79, 10, 88, 15);
-        }
-    });
+        // Apply styles based on video position
+        box.style.left = `${rect.left + (rect.width * config.xStart / 100)}px`;
+        box.style.top = `${rect.top + (rect.height * config.yStart / 100)}px`;
+        box.style.width = `${rect.width * widthPct / 100}px`;
+        box.style.height = `${rect.height * heightPct / 100}px`;
+    }
 
     requestAnimationFrame(syncOverlays);
-}
-
-function updateStyle(box, rect, topPct, leftPct, widthPct, heightPct) {
-    box.style.top = `${rect.top + (rect.height * topPct / 100)}px`;
-    box.style.left = `${rect.left + (rect.width * leftPct / 100)}px`;
-    box.style.width = `${rect.width * widthPct / 100}px`;
-    box.style.height = `${rect.height * heightPct / 100}px`;
 }
 
 syncOverlays();
