@@ -1,16 +1,19 @@
 .yt-overlay-box {
     position: fixed;
-    background-color: pink;
     z-index: 2147483647;
     pointer-events: none;
     transition: none !important;
 }
 
-/* Night Mode specific style */
-.yt-overlay-box.night-style {
-    background-color: burlywood; /* Pitch black for total restriction */
+.standard-style {
+    background-color: pink;
 }
 
+.night-style {
+    background-color: burlywood;
+}
+
+/* Hide UI spoilers */
 .ytp-tooltip.ytp-preview, 
 .ytp-videopreview, 
 .ytp-tooltip-bg,
