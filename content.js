@@ -1,16 +1,16 @@
 // CONFIGURATION: Define your boxes here using percentages (0-100)
 const OVERLAYS = {
     "top-horizontal-strip": {
-        xStart: 5,  xEnd: 38, // Width is 33%
-        yStart: 7,  yEnd: 14  // Height is 7%
+        xStart: 5,  xEnd: 38,
+        yStart: 5.5,  yEnd: 10
     },
     "left-vertical-strip": {
-        xStart: 5,  xEnd: 15, // Width is 10%
-        yStart: 12, yEnd: 42  // Height is 30%
+        xStart: 5,  xEnd: 15,
+        yStart: 12, yEnd: 30 
     },
     "bottom-wide-strip": {
-        xStart: 10, xEnd: 98, // Width is 88%
-        yStart: 79, yEnd: 94  // Height is 15%
+        xStart: 10, xEnd: 98,
+        yStart: 79, yEnd: 94
     }
 };
 
