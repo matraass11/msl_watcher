@@ -40,3 +40,10 @@
     width: 88%;    
     height: 15%;
 }
+
+/* Hides the video preview thumbnail when hovering over the progress bar */
+.ytp-tooltip.ytp-preview, 
+.ytp-tooltip-bg, 
+.ytp-ce-video {
+    display: none !important;
+}
