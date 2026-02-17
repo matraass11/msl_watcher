@@ -1,54 +1,41 @@
-// CONFIGURATIONS (Using your exact coordinates)
-const CONFIGS = {
-    1: { // Mode 1: Standard Spoilers
-        overlays: {
-            "top-horizontal-strip": { xStart: 5, xEnd: 38, yStart: 5.5, yEnd: 10 },
-            "left-vertical-strip": { xStart: 5, xEnd: 15, yStart: 12, yEnd: 31 },
-            "bottom-wide-strip": { xStart: 10, xEnd: 95, yStart: 79, yEnd: 99 }
-        },
-        style: 'standard-style',
-        mute: false
-    },
-    2: { // Mode 2: Night Mode
-        overlays: {
-            "night-left-block": { xStart: 5, xEnd: 38, yStart: 5.5, yEnd: 10 },
-            "night-bottom-block": { xStart: 5, xEnd: 95, yStart: 12, yEnd: 99 }
-        },
-        style: 'night-style',
-        mute: true
-    },
-    3: { // Mode 3: Clear Mode
-        overlays: {},
-        style: '',
-        mute: false
-    }
-};
-
 let currentMode = 1;
+
+// Utility to map Digit keys to modes
+const getActiveKeyMap = () => {
+    const map = {};
+    map[`Digit${APP_SETTINGS.keys.mode1}`] = 1;
+    map[`Digit${APP_SETTINGS.keys.mode2}`] = 2;
+    map[`Digit${APP_SETTINGS.keys.mode3}`] = 3;
+    return map;
+};
 
 function syncOverlays() {
     const video = document.querySelector('video');
     if (!video) return requestAnimationFrame(syncOverlays);
 
     const rect = video.getBoundingClientRect();
-    const activeConfig = CONFIGS[currentMode];
+    const activeOverlays = OVERLAY_COORDS[currentMode];
 
-    // Cleanup: Remove boxes from other modes
-    const activeIds = Object.keys(activeConfig.overlays);
+    // Remove boxes not in the current layout
+    const activeIds = Object.keys(activeOverlays);
     document.querySelectorAll('.yt-overlay-box').forEach(box => {
         if (!activeIds.includes(box.id)) box.remove();
     });
 
-    // Render active boxes
-    for (const [id, config] of Object.entries(activeConfig.overlays)) {
+    // Create and position boxes
+    for (const [id, config] of Object.entries(activeOverlays)) {
         let box = document.getElementById(id);
-        
         if (!box) {
             box = document.createElement('div');
             box.id = id;
-            box.className = `yt-overlay-box ${activeConfig.style}`;
+            box.className = 'yt-overlay-box';
             document.body.appendChild(box);
         }
+
+        // Apply dynamic color from settings
+        box.style.backgroundColor = (currentMode === 2) 
+            ? APP_SETTINGS.colors.night 
+            : APP_SETTINGS.colors.standard;
 
         const widthPct = config.xEnd - config.xStart;
         const heightPct = config.yEnd - config.yStart;
@@ -59,43 +46,24 @@ function syncOverlays() {
         box.style.height = `${rect.height * heightPct / 100}px`;
     }
 
-    // Mute handling
-    if (activeConfig.mute && !video.muted) {
-        video.muted = true;
-    }
-
-    else if (!activeConfig.mute && video.muted) {
-        video.muted = false;
-    }
+    // Force Mute in Mode 2
+    if (currentMode === 2 && !video.muted) video.muted = true;
+    if (currentMode != 2 && video.muted) video.muted = false;
 
     requestAnimationFrame(syncOverlays);
 }
 
+
 window.addEventListener('keydown', (e) => {
-    // Mapping physical keys to mode numbers
-    const keyToMode = {
-        'Digit1': 1,
-        'Digit2': 2,
-        'Digit3': 3
-    };
-
-    // Check if Alt/Option is held AND the key pressed is 1, 2, or 3
-    if (e.altKey && keyToMode[e.code]) {
-        // Stop the browser from typing special characters (like ¡, ™, £)
-        e.preventDefault(); 
+    const keyMap = getActiveKeyMap();
+    if (e.altKey && keyMap[e.code]) {
+        e.preventDefault();
         e.stopPropagation();
-
-        const newMode = keyToMode[e.code];
-
-        if (currentMode !== newMode) {
-            currentMode = newMode;
-            
-            // Immediate cleanup of old boxes
-            document.querySelectorAll('.yt-overlay-box').forEach(el => el.remove());
-            
-            console.log(`Switched to Mode ${currentMode} using physical key ${e.code}`);
-        }
+        
+        currentMode = keyMap[e.code];
+        // Wipe boxes to allow for fresh styling/positioning
+        document.querySelectorAll('.yt-overlay-box').forEach(el => el.remove());
     }
-}, true); // 'true' captures the event before YouTube's own keyboard shortcuts can interfere
+}, true);
 
 syncOverlays();

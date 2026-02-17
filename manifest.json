@@ -1,12 +1,11 @@
 {
   "manifest_version": 3,
   "name": "YouTube Video Blocker",
-  "version": "1.0",
-  "description": "Covers specific parts of the YouTube video player.",
+  "version": "1.2",
   "content_scripts": [
     {
       "matches": ["https://www.youtube.com/*"],
-      "js": ["content.js"],
+      "js": ["settings.js", "coordinates.js", "content.js"],
       "css": ["styles.css"]
     }
   ]

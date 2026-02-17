@@ -1,19 +1,12 @@
+/* Core behavior for all overlay boxes */
 .yt-overlay-box {
-    position: fixed;
-    z-index: 2147483647;
-    pointer-events: none;
-    transition: none !important;
+    position: fixed; /* Ensures it stays relative to the screen, not the page scroll */
+    z-index: 2147483647; /* Forces it above all YouTube UI elements */
+    pointer-events: none; /* Allows you to click "through" the box to the video */
+    transition: none !important; /* Prevents the box from "lagging" when resizing the window */
 }
 
-.standard-style {
-    background-color: pink;
-}
-
-.night-style {
-    background-color: burlywood;
-}
-
-/* Hide UI spoilers */
+/* Force-hide YouTube's built-in spoiler elements */
 .ytp-tooltip.ytp-preview, 
 .ytp-videopreview, 
 .ytp-tooltip-bg,
