@@ -6,11 +6,11 @@ const OVERLAYS = {
     },
     "left-vertical-strip": {
         xStart: 5,  xEnd: 15,
-        yStart: 12, yEnd: 30 
+        yStart: 12, yEnd: 31 
     },
     "bottom-wide-strip": {
-        xStart: 10, xEnd: 98,
-        yStart: 79, yEnd: 94
+        xStart: 10, xEnd: 95,
+        yStart: 79, yEnd: 99
     }
 };
 
