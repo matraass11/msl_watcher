@@ -1,13 +1,13 @@
 // --- USER PREFERENCES ---
 const APP_SETTINGS = {
     keys: {
-        mode1: "A", // Key for Standard
-        mode2: "S", // Key for Night
-        mode3: "D" // Key for Clear
+        mode1: 1, // Key for Standard
+        mode2: 2, // Key for Night
+        mode3: 9 // Key for Clear
     },
     colors: {
-        standard: "pink",
-        night: "burlywood"
+        day: "#0a0817",
+        night: "#0a0817"
     }
 };
 

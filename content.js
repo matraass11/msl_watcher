@@ -47,7 +47,7 @@ function syncOverlays() {
         // Apply dynamic color from settings
         box.style.backgroundColor = (currentMode === 2) 
             ? APP_SETTINGS.colors.night 
-            : APP_SETTINGS.colors.standard;
+            : APP_SETTINGS.colors.day;
 
         const widthPct = config.xEnd - config.xStart;
         const heightPct = config.yEnd - config.yStart;
