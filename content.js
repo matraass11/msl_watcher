@@ -1,11 +1,23 @@
 let currentMode = 1;
 
-// Utility to map Digit keys to modes
 const getActiveKeyMap = () => {
     const map = {};
-    map[`Digit${APP_SETTINGS.keys.mode1}`] = 1;
-    map[`Digit${APP_SETTINGS.keys.mode2}`] = 2;
-    map[`Digit${APP_SETTINGS.keys.mode3}`] = 3;
+
+    const formatKey = (val) => {
+        if (!val) return null; 
+        const str = String(val).toUpperCase();
+        // Detect if it's a number (Digit) or a letter (Key)
+        return /^\d$/.test(str) ? `Digit${str}` : `Key${str}`;
+    };
+
+    const k1 = formatKey(APP_SETTINGS.keys.mode1);
+    const k2 = formatKey(APP_SETTINGS.keys.mode2);
+    const k3 = formatKey(APP_SETTINGS.keys.mode3);
+
+    if (k1) map[k1] = 1;
+    if (k2) map[k2] = 2;
+    if (k3) map[k3] = 3;
+    
     return map;
 };
 
@@ -53,7 +65,6 @@ function syncOverlays() {
     requestAnimationFrame(syncOverlays);
 }
 
-
 window.addEventListener('keydown', (e) => {
     const keyMap = getActiveKeyMap();
     if (e.altKey && keyMap[e.code]) {
@@ -61,8 +72,10 @@ window.addEventListener('keydown', (e) => {
         e.stopPropagation();
         
         currentMode = keyMap[e.code];
-        // Wipe boxes to allow for fresh styling/positioning
+        
+        // UI Refresh
         document.querySelectorAll('.yt-overlay-box').forEach(el => el.remove());
+        console.log(`Switched to Mode ${currentMode}`);
     }
 }, true);
 
