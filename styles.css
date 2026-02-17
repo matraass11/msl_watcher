@@ -1,13 +1,16 @@
-/* Shared style for ALL boxes */
 .yt-overlay-box {
-    position: fixed; /* Fixed to viewport so it follows video position */
+    position: fixed;
     background-color: pink;
-    z-index: 2147483647; /* Maximum possible z-index */
+    z-index: 2147483647;
     pointer-events: none;
-    transition: none !important; /* Prevents "lagging" behind video during resize */
+    transition: none !important;
 }
 
-/* The Anti-Spoiler CSS */
+/* Night Mode specific style */
+.yt-overlay-box.night-style {
+    background-color: burlywood; /* Pitch black for total restriction */
+}
+
 .ytp-tooltip.ytp-preview, 
 .ytp-videopreview, 
 .ytp-tooltip-bg,
